@@ -30,7 +30,7 @@ public class AccountController extends Controller {
 	public ResponseEntity<String> createAccount(@RequestBody Account account) {
 		if (account.getAccount_id() != null) {
 			response.setStatus(HttpResponse.BAD_REQUEST);
-			response.setMessage("Please provide only name and USB balance.");
+			response.setMessage("Please provide only name and USD balance.");
 		} else {
 			response.clearResponse();
 			if (account.getBalance_btc() != 0) {
