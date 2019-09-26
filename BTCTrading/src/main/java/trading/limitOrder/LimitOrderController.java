@@ -42,7 +42,7 @@ public class LimitOrderController extends Controller {
 		if (limitOrder.getOrder_id() != null || limitOrder.isProcessed()) {
 			response.setStatus(HttpResponse.BAD_REQUEST);
 			response.setMessage("Please provide only price limit and account ID.");
-		}else if(limitOrder.getPrice_limit() < 0) {
+		} else if (limitOrder.getPrice_limit() < 0) {
 			response.setStatus(HttpResponse.BAD_REQUEST);
 			response.setMessage("Price limit must not be negative.");
 		} else {
@@ -53,6 +53,14 @@ public class LimitOrderController extends Controller {
 		return response.getAndClearResponse();
 	}
 
+	/*
+	 * This method returns the order, which was requested by input parameter
+	 * representing its ID. It also returns the corresponding account. Price limit
+	 * is compared with the current market price before returning. If current price
+	 * is lower than price limit, order will be executed. With order execution, we
+	 * mark order as processed and populate account balances based on the current
+	 * market price.
+	 */
 	@GetMapping("/limitOrders/{order_id}")
 	public ResponseEntity<String> fetchOrderDetails(@PathVariable("order_id") Long order_id) {
 		if (order_id <= 0) {
