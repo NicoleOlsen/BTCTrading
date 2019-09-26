@@ -1,0 +1,17 @@
+#! /bin/bash
+curl -X POST localhost:8080/accounts -H 'Content-type:application/json' -d '{"name": "Sam", "balance_usd": "76788"}'
+curl -X POST localhost:8080/accounts -H 'Content-type:application/json' -d '{"name": "Kim", "balance_usd": "877892318"}'
+curl -X POST localhost:8080/accounts -H 'Content-type:application/json' -d '{"name": "Mike", "balance_usd": "390596.878"}'
+curl -X POST localhost:8080/accounts -H 'Content-type:application/json' -d '{"name": "Simon", "balance_usd": "8970808.8968"}'
+curl -X POST localhost:8080/accounts -H 'Content-type:application/json' -d '{"name": "Karl", "balance_usd": "390798.8"}'
+curl -X POST localhost:8080/accounts -H 'Content-type:application/json' -d '{"name": "Tim", "balance_usd": "9798907.1"}'
+
+curl -X POST localhost:8080/limitOrders -H 'Content-type:application/json' -d '{"account_id": "1", "price_limit": "3010.87"}'
+curl -X POST localhost:8080/limitOrders -H 'Content-type:application/json' -d '{"account_id": "2", "price_limit": "3100.9897"}'
+curl -X POST localhost:8080/limitOrders -H 'Content-type:application/json' -d '{"account_id": "5", "price_limit": "3999.6"}'
+curl -X POST localhost:8080/limitOrders -H 'Content-type:application/json' -d '{"account_id": "99", "price_limit": "3560"}'
+curl -X POST localhost:8080/limitOrders -H 'Content-type:application/json' -d '{"account_id": "100", "price_limit": "3599.3"}'
+
+
+
+
