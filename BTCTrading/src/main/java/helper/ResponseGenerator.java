@@ -3,12 +3,13 @@ package helper;
 import org.springframework.http.ResponseEntity;
 
 public class ResponseGenerator {
-	
+
 	private HttpResponse status;
 	private String message;
-	
-	public ResponseGenerator() {}
-	
+
+	public ResponseGenerator() {
+	}
+
 	public ResponseGenerator(HttpResponse status, String message) {
 		this.status = status;
 		this.message = message;
@@ -29,14 +30,14 @@ public class ResponseGenerator {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	
+
 	public void appendMessage(String message) {
 		this.message += " " + message;
 	}
-	
+
 	public ResponseEntity<String> getResponse() {
 		// TODO add support for accepted, created, notFound,..
-		switch(status){
+		switch (status) {
 		case OK:
 			return ResponseEntity.ok().body(message);
 		case BAD_REQUEST:
@@ -45,12 +46,12 @@ public class ResponseGenerator {
 			return ResponseEntity.ok().body(message);
 		}
 	}
-	
+
 	public void clearResponse() {
 		status = HttpResponse.OK;
 		message = "";
 	}
-	
+
 	public ResponseEntity<String> getAndClearResponse() {
 		ResponseEntity<String> response = getResponse();
 		clearResponse();

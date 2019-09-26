@@ -11,21 +11,21 @@ import org.springframework.web.client.RestTemplate;
 import helper.GetPropertyValues;
 
 public class Market {
-	
+
 	private static final Logger log = LoggerFactory.getLogger(Application.class);
 
 	public static Quote getCurrentMarketData() {
-		Quote quote = new Quote(); 
-    	String endpoint = getEndpoint();
-    	if(endpoint.isEmpty()) {
-    		log.error("Unable to connect to the endpoint.");
-    	}else {
-    		RestTemplate restTemplate = new RestTemplate();
-            quote = restTemplate.getForObject(endpoint, Quote.class);
-    	}
-        return quote;
+		Quote quote = new Quote();
+		String endpoint = getEndpoint();
+		if (endpoint.isEmpty()) {
+			log.error("Unable to connect to the endpoint.");
+		} else {
+			RestTemplate restTemplate = new RestTemplate();
+			quote = restTemplate.getForObject(endpoint, Quote.class);
+		}
+		return quote;
 	}
-	
+
 	private static String getEndpoint() {
 		String endpoint = null;
 		GetPropertyValues properties = new GetPropertyValues();

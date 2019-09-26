@@ -1,4 +1,4 @@
-package account;
+package helper;
 
 import java.io.IOException;
 import org.junit.runner.RunWith;
@@ -29,9 +29,6 @@ public abstract class AbstractTest {
    @Autowired
    WebApplicationContext webApplicationContext;
    
-   private final String uriAccounts = "/accounts";
-   private final String uriOrders = "/orders"; // TODO
-
    protected void setUp() {
       mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
    }
@@ -46,14 +43,14 @@ public abstract class AbstractTest {
       return objectMapper.readValue(json, clazz);
    }
    
-   protected MvcResult getMvcGetResult(String accoutId) throws JsonProcessingException, Exception {
-		return mvc.perform(MockMvcRequestBuilders.get(uriAccounts + "/" + accoutId)
+   protected MvcResult getMvcGetResult(String uri, String accoutId) throws JsonProcessingException, Exception {
+		return mvc.perform(MockMvcRequestBuilders.get(uri + "/" + accoutId)
 		         .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 	}
 	
-	protected MvcResult getMvcPostResult(Account account) throws JsonProcessingException, Exception {
+	protected MvcResult getMvcPostResult(String uri, Account account) throws JsonProcessingException, Exception {
 		String inputJson = mapToJson(account);
-		return mvc.perform(MockMvcRequestBuilders.post(uriAccounts)
+		return mvc.perform(MockMvcRequestBuilders.post(uri)
 	         .contentType(MediaType.APPLICATION_JSON_VALUE)
 	         .content(inputJson)).andReturn();
 	}

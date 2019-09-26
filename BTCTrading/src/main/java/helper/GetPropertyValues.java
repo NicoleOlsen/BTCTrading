@@ -13,11 +13,11 @@ import org.slf4j.LoggerFactory;
 import trading.Application;
 
 public class GetPropertyValues {
-	
+
 	private static final Logger log = LoggerFactory.getLogger(Application.class);
 	private String result;
 	private InputStream inputStream;
- 
+
 	public String getValue(String property) throws IOException {
 		try {
 			Properties properties = new Properties();

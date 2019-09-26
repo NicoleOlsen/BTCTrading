@@ -6,31 +6,32 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Quote {
 
-	@JsonFormat(pattern = "yyyy-MM-ddTKK:mm:a")  
-    private String timestamp; 
-    private String price;
+	@JsonFormat(pattern = "yyyy-MM-ddTKK:mm:a")
+	private String timestamp;
+	private String price;
 
-    public Quote() {}
-    
-    public String getTimeStamp() {
-        return timestamp;
-    }
+	public Quote() {
+	}
 
-    public void setTimeStamp(String timestamp) {
-        this.timestamp = timestamp;
-    }
+	public String getTimeStamp() {
+		return timestamp;
+	}
 
-    public String getPrice() {
-        return price;
-    }
+	public void setTimeStamp(String timestamp) {
+		this.timestamp = timestamp;
+	}
 
-    public void setPrice(String price) {
-        this.price = price;
-    }
-    
-    public boolean isEmpty() {
-    	return price.isEmpty() || timestamp.isEmpty() ? true : false;
-    }
+	public String getPrice() {
+		return price;
+	}
+
+	public void setPrice(String price) {
+		this.price = price;
+	}
+
+	public boolean isEmpty() {
+		return price.isEmpty() || timestamp.isEmpty() ? true : false;
+	}
 
 	@Override
 	public String toString() {
