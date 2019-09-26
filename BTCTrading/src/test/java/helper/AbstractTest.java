@@ -1,6 +1,10 @@
 package helper;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import trading.Application;
 import trading.account.Account;
+import trading.limitOrder.LimitOrder;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Application.class)
@@ -43,15 +48,31 @@ public abstract class AbstractTest {
       return objectMapper.readValue(json, clazz);
    }
    
-   protected MvcResult getMvcGetResult(String uri, String accoutId) throws JsonProcessingException, Exception {
-		return mvc.perform(MockMvcRequestBuilders.get(uri + "/" + accoutId)
+   protected MvcResult getMvcGetResult(String uri, String id) throws JsonProcessingException, Exception {
+		return mvc.perform(MockMvcRequestBuilders.get(uri + "/" + id)
 		         .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 	}
 	
-	protected MvcResult getMvcPostResult(String uri, Account account) throws JsonProcessingException, Exception {
-		String inputJson = mapToJson(account);
+	protected <T> MvcResult getMvcPostResult(String uri, T obj) throws JsonProcessingException, Exception {
+		String inputJson = mapToJson(obj);
 		return mvc.perform(MockMvcRequestBuilders.post(uri)
 	         .contentType(MediaType.APPLICATION_JSON_VALUE)
 	         .content(inputJson)).andReturn();
+	}
+	
+	protected String checkStatusAndReturnContentForGetResult(String orderId, int expectedStatus, String uri)
+			throws JsonProcessingException, Exception, UnsupportedEncodingException {
+		MvcResult mvcResult = getMvcGetResult(uri, orderId);
+		int status = mvcResult.getResponse().getStatus();
+		assertEquals(expectedStatus, status);
+		return mvcResult.getResponse().getContentAsString();
+	}
+
+	protected <T> String checkStatusAndReturnContentForPostResult(T obj, int expectedStatus, String uri)
+			throws JsonProcessingException, Exception, UnsupportedEncodingException {
+		MvcResult mvcResult = getMvcPostResult(uri, obj);
+		int status = mvcResult.getResponse().getStatus();
+		assertEquals(expectedStatus, status);
+		return mvcResult.getResponse().getContentAsString();
 	}
 }

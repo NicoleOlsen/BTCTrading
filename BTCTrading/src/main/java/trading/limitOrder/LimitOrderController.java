@@ -42,13 +42,15 @@ public class LimitOrderController extends Controller {
 		if (limitOrder.getOrder_id() != null || limitOrder.isProcessed()) {
 			response.setStatus(HttpResponse.BAD_REQUEST);
 			response.setMessage("Please provide only price limit and account ID.");
+		}else if(limitOrder.getPrice_limit() < 0) {
+			response.setStatus(HttpResponse.BAD_REQUEST);
+			response.setMessage("Price limit must not be negative.");
 		} else {
 			limitOrderRepository.save(limitOrder);
 			response.setStatus(HttpResponse.OK);
 			response.setMessage("Order created: " + limitOrder.toString());
 		}
 		return response.getAndClearResponse();
-
 	}
 
 	@GetMapping("/limitOrders/{order_id}")

@@ -1,5 +1,3 @@
-TODOs
-
-CamleCase vs. snake_case
-
-Check case: account shouldn't have two limits
+Run exchange.py.
+ 
+Optional: execute ./Init.txt (this is an initial load needed due to data being only in memory)

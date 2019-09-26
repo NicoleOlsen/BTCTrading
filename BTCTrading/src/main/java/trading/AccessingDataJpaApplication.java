@@ -34,7 +34,9 @@ public class AccessingDataJpaApplication {
 	}
 
 	private void initializeLimitOrders(LimitOrderRepository repository) {
-		repository.save(new LimitOrder.Builder().withPriceLimit(3546.78).withAccountId(3L).build());
+		repository.save(new LimitOrder.Builder().withPriceLimit(9999.78).withAccountId(1L).build());
+		repository.save(new LimitOrder.Builder().withPriceLimit(0.78).withAccountId(1L).build());
+		repository.save(new LimitOrder.Builder().withPriceLimit(0.78).withAccountId(999L).build());
 	}
 
 }
