@@ -19,15 +19,6 @@ public class AccountControllerTest extends AbstractTest {
 		super.setUp();
 	}
 
-	// TODO tests
-	
-
-
-//	curl -X POST localhost:8080/accounts -H 'Content-type:application/json' -d '{"name": "Sam", "balance_usd": "3478988"}'
-//	curl -X POST localhost:8080/accounts -H 'Content-type:application/json' -d '{"account_id": "43", "name": "Sam", "balance_usd": "38", "balance_btc": "38"}'
-//	curl -X POST localhost:8080/accounts -H 'Content-type:application/json' -d '{"name": "Sam", "balance_usd": "38", "balance_btc": "-8"}'
-//	curl -X POST localhost:8080/accounts -H 'Content-type:application/json' -d '{"name": "Sam", "balance_usd": "-33", "balance_btc": "38"}'
-
 	@Test
 	public void okGetAccount() throws Exception {
 		MvcResult mvcResult = getMvcGetResult(uriAccounts, "1");
