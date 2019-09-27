@@ -22,6 +22,7 @@ public class AccountControllerTest extends AbstractTest {
 	@Test
 	public void okGetAccount() throws Exception {
 		String content = checkStatusAndReturnContentForGetResult("1", 200, uri);
+		System.out.println(content);
 		assertEquals(content, "Account [account_id=1, name=Kim, balance_usd=798.89, balance_btc=0.0]");
 	}
 
