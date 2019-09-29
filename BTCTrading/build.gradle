@@ -30,6 +30,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.4.0")
     compile("mysql:mysql-connector-java")
+    compile("com.googlecode.json-simple:json-simple:1.1.1")
     testCompile("org.springframework.boot:spring-boot-starter-test")
     testCompile("com.jayway.jsonpath:json-path")
     runtime("com.h2database:h2")
