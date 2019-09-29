@@ -2,6 +2,8 @@ package helper;
 
 import org.springframework.http.ResponseEntity;
 
+import enums.HttpResponse;
+
 public class ResponseGenerator {
 
 	private HttpResponse status;

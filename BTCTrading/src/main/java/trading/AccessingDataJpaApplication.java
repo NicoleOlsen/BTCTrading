@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Bean;
 
 import trading.account.Account;
 import trading.account.AccountRepository;
-import trading.limitOrder.LimitOrder;
-import trading.limitOrder.LimitOrderRepository;
+import trading.limitorder.LimitOrder;
+import trading.limitorder.LimitOrderRepository;
 
 /**
  * This class is used solely for loading initial data due to in memory DB.

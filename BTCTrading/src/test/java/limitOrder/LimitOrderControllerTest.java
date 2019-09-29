@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import helper.AbstractTest;
-import trading.limitOrder.LimitOrder;
+import trading.limitorder.LimitOrder;
 
 public class LimitOrderControllerTest extends AbstractTest {
 

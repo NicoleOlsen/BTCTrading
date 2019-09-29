@@ -1,4 +1,4 @@
-package customExceptions;
+package customexceptions;
 
 public class AccountNotFoundException extends Exception {
 

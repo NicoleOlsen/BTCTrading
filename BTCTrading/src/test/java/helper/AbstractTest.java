@@ -1,10 +1,14 @@
 package helper;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,9 +26,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import constants.Constants;
 import trading.Application;
-import trading.account.Account;
-import trading.limitOrder.LimitOrder;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Application.class)
@@ -49,7 +52,7 @@ public abstract class AbstractTest {
    }
    
    protected MvcResult getMvcGetResult(String uri, String id) throws JsonProcessingException, Exception {
-		return mvc.perform(MockMvcRequestBuilders.get(uri + "/" + id)
+		return mvc.perform(MockMvcRequestBuilders.get(uri + Constants.SLASH + id)
 		         .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 	}
 	
@@ -60,9 +63,9 @@ public abstract class AbstractTest {
 	         .content(inputJson)).andReturn();
 	}
 	
-	protected String checkStatusAndReturnContentForGetResult(String orderId, int expectedStatus, String uri)
+	protected String checkStatusAndReturnContentForGetResult(String id, int expectedStatus, String uri)
 			throws JsonProcessingException, Exception, UnsupportedEncodingException {
-		MvcResult mvcResult = getMvcGetResult(uri, orderId);
+		MvcResult mvcResult = getMvcGetResult(uri, id);
 		int status = mvcResult.getResponse().getStatus();
 		assertEquals(expectedStatus, status);
 		return mvcResult.getResponse().getContentAsString();
@@ -74,5 +77,13 @@ public abstract class AbstractTest {
 		int status = mvcResult.getResponse().getStatus();
 		assertEquals(expectedStatus, status);
 		return mvcResult.getResponse().getContentAsString();
+	}
+	
+	protected JSONObject getJsonFromContent(String content, String toGet) throws ParseException {
+		Object parsedContent = new JSONParser().parse(content);
+		JSONObject jsonContent = (JSONObject) parsedContent;
+		JSONObject jsonReturn = (JSONObject) jsonContent.get(toGet);
+		assertNotNull(jsonReturn);
+		return jsonReturn;
 	}
 }

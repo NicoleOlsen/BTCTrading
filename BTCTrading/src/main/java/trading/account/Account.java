@@ -11,13 +11,13 @@ public class Account {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long account_id;
+	private Long accountId;
 	@Column(nullable = false)
 	private String name;
 	@Column(columnDefinition = "double default 0")
-	private double balance_usd;
+	private double balanceUsd;
 	@Column(columnDefinition = "double default 0")
-	private double balance_btc = 0;
+	private double balanceBtc = 0;
 
 	public Account() {
 	}
@@ -26,19 +26,19 @@ public class Account {
 
 		@Id
 		@GeneratedValue(strategy = GenerationType.AUTO)
-		private Long account_id;
+		private Long accountId;
 		@Column(nullable = false)
 		private String name;
 		@Column(columnDefinition = "double default 0")
-		private double balance_usd;
+		private double balanceUsd;
 		@Column(columnDefinition = "double default 0")
-		private double balance_btc = 0;
+		private double balanceBtc = 0;
 
 		public Builder() {
 		}
 
-		public Builder withAccountId(Long account_id) {
-			this.account_id = account_id;
+		public Builder withAccountId(Long accountId) {
+			this.accountId = accountId;
 			return this;
 		}
 
@@ -47,28 +47,28 @@ public class Account {
 			return this;
 		}
 
-		public Builder withUsdBalance(double balance_usd) {
-			this.balance_usd = balance_usd;
+		public Builder withUsdBalance(double balanceUsd) {
+			this.balanceUsd = balanceUsd;
 			return this;
 		}
 
-		public Builder withBtcBalance(double balance_btc) {
-			this.balance_btc = balance_btc;
+		public Builder withBtcBalance(double balanceBtc) {
+			this.balanceBtc = balanceBtc;
 			return this;
 		}
 
 		public Account build() {
 			Account account = new Account();
-			account.account_id = this.account_id;
+			account.accountId = this.accountId;
 			account.name = name;
-			account.balance_usd = balance_usd;
-			account.balance_btc = balance_btc;
+			account.balanceUsd = balanceUsd;
+			account.balanceBtc = balanceBtc;
 			return account;
 		}
 	}
 
-	public Long getAccount_id() {
-		return account_id;
+	public Long getAccountId() {
+		return accountId;
 	}
 
 	public String getName() {
@@ -79,33 +79,33 @@ public class Account {
 		this.name = name;
 	}
 
-	public double getBalance_usd() {
-		return balance_usd;
+	public double getBalanceUsd() {
+		return balanceUsd;
 	}
 
-	public void setBalance_usd(double balance_usd) {
-		this.balance_usd = balance_usd;
+	public void setBalanceUsd(double balanceUsd) {
+		this.balanceUsd = balanceUsd;
 	}
 
-	public double getBalance_btc() {
-		return balance_btc;
+	public double getBalanceBtc() {
+		return balanceBtc;
 	}
 
-	public void setBalance_btc(double balance_btc) {
-		this.balance_btc = balance_btc;
+	public void setBalanceBtc(double balanceBtc) {
+		this.balanceBtc = balanceBtc;
 	}
 
 	public boolean isEmpty() {
-		if (account_id == null) {
+		if (accountId == null) {
 			return true;
 		}
 		return false;
 	}
 
 	@Override
-	public String toString() {
-		return "Account [account_id=" + account_id + ", name=" + name + ", balance_usd=" + balance_usd
-				+ ", balance_btc=" + balance_btc + "]";
+	public String toString() { 
+		return "\"account\": { \"account_id\": \"" + accountId + "\", \"name\": \"" + name + "\", \"balance_usd\": \""
+				+ balanceUsd + "\", \"balance_btc\": \"" + balanceBtc + "\" }";
 	}
 
 }

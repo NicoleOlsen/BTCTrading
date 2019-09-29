@@ -1,4 +1,4 @@
-package trading.limitOrder;
+package trading.limitorder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,12 +13,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import customExceptions.AccountNotFoundException;
-import customExceptions.InsufficientFundsException;
-import customExceptions.NoDataException;
+import constants.Constants;
+import customexceptions.AccountNotFoundException;
+import customexceptions.InsufficientFundsException;
+import customexceptions.NoDataException;
+import enums.HttpResponse;
+import enums.Repository;
 import helper.Controller;
-import helper.HttpResponse;
-import helper.Repository;
+import helper.JsonHelper;
 import helper.ResponseGenerator;
 import market.Market;
 import market.Quote;
@@ -39,16 +41,16 @@ public class LimitOrderController extends Controller {
 
 	@PostMapping("/limitOrders")
 	public ResponseEntity<String> createLimitOrder(@RequestBody LimitOrder limitOrder) {
-		if (limitOrder.getOrder_id() != null || limitOrder.isProcessed()) {
+		if (limitOrder.getOrderId() != null || limitOrder.isProcessed()) {
 			response.setStatus(HttpResponse.BAD_REQUEST);
-			response.setMessage("Please provide only price limit and account ID.");
-		} else if (limitOrder.getPrice_limit() < 0) {
+			response.setMessage(JsonHelper.getJsonBodyWithMessage(Constants.PROVIDE_ONLY_PRICE_LIMIT_AND_ACCOUNT_ID, Constants.ACCOUNT_NONE));
+		} else if (limitOrder.getPriceLimit() < 0) {
 			response.setStatus(HttpResponse.BAD_REQUEST);
-			response.setMessage("Price limit must not be negative.");
+			response.setMessage(JsonHelper.getJsonBodyWithMessage(Constants.PRICE_LIMIT_MUST_NOT_BE_NEGATIVE, Constants.ACCOUNT_NONE));
 		} else {
 			limitOrderRepository.save(limitOrder);
 			response.setStatus(HttpResponse.OK);
-			response.setMessage("Order created: " + limitOrder.toString());
+			response.setMessage(JsonHelper.getJsonBodyWithMessage(Constants.NONE,Constants.ORDER_CREATED + " " + limitOrder.toString()));
 		}
 		return response.getAndClearResponse();
 	}
@@ -62,21 +64,21 @@ public class LimitOrderController extends Controller {
 	 * market price.
 	 */
 	@GetMapping("/limitOrders/{order_id}")
-	public ResponseEntity<String> fetchOrderDetails(@PathVariable("order_id") Long order_id) {
-		if (order_id <= 0) {
+	public ResponseEntity<String> fetchOrderDetails(@PathVariable("order_id") Long orderId) {
+		if (orderId <= 0) {
 			response.setStatus(HttpResponse.BAD_REQUEST);
-			response.setMessage("Order id must be greater than 0.");
+			response.setMessage(Constants.ORDER_ID_MUST_BE_GREATER_THAN_ZERO);
 		} else {
 			response.setStatus(HttpResponse.OK);
-			Optional<LimitOrder> loOpt = limitOrderRepository.findById(order_id);
+			Optional<LimitOrder> loOpt = limitOrderRepository.findById(orderId);
 			if (loOpt.isPresent()) {
 				Quote quote = Market.getCurrentMarketData();
 				if (quote != null && quote.isEmpty()) {
-					response.setMessage("Market data is not available.");
+					response.setMessage(Constants.MARKET_DATA_IS_NOT_AVAILABLE);
 				} else {
 					double currentPrice = Double.valueOf(quote.getPrice());
 					LimitOrder lo = loOpt.get();
-					double limit = lo.getPrice_limit();
+					double limit = lo.getPriceLimit();
 					try {
 						Account acc = LimitOrderHelper.getAccountFromOrder(lo, accountRepository);
 						if (currentPrice < limit) {
@@ -90,7 +92,7 @@ public class LimitOrderController extends Controller {
 					}
 				}
 			} else {
-				response.setMessage("Order with id " + order_id + " does not exist.");
+				response.setMessage(Constants.ORDER_WITH_ID + orderId + Constants.DOES_NOT_EXIST);
 			}
 		}
 		return response.getAndClearResponse();
@@ -107,7 +109,7 @@ public class LimitOrderController extends Controller {
 			response.setMessage(e.getMessage());
 		}
 		if (orders.isEmpty()) {
-			response.setMessage("There are no orders.");
+			response.setMessage(Constants.THERE_ARE_NO_ORDERS);
 		} else {
 			response.setMessage(orders.toString());
 		}

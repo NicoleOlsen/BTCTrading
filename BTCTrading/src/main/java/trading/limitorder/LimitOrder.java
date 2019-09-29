@@ -1,4 +1,4 @@
-package trading.limitOrder;
+package trading.limitorder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,12 +11,12 @@ public class LimitOrder {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long order_id;
+	private Long orderId;
 	@Column(nullable = false)
-	private Double price_limit;
+	private Double priceLimit;
 	private boolean processed;
 	@Column(nullable = false)
-	private Long account_id;
+	private Long accountId;
 
 	public LimitOrder() {
 	}
@@ -25,23 +25,23 @@ public class LimitOrder {
 
 		@Id
 		@GeneratedValue(strategy = GenerationType.AUTO)
-		private Long order_id;
+		private Long orderId;
 		@Column(nullable = false)
-		private Double price_limit;
+		private Double priceLimit;
 		private boolean processed;
 		@Column(nullable = false)
-		private Long account_id;
+		private Long accountId;
 
 		public Builder() {
 		}
 
-		public Builder withOrderId(Long order_id) {
-			this.order_id = order_id;
+		public Builder withOrderId(Long orderId) {
+			this.orderId = orderId;
 			return this;
 		}
 
-		public Builder withPriceLimit(Double price_limit) {
-			this.price_limit = price_limit;
+		public Builder withPriceLimit(Double priceLimit) {
+			this.priceLimit = priceLimit;
 			return this;
 		}
 
@@ -50,31 +50,31 @@ public class LimitOrder {
 			return this;
 		}
 
-		public Builder withAccountId(Long account_id) {
-			this.account_id = account_id;
+		public Builder withAccountId(Long accountId) {
+			this.accountId = accountId;
 			return this;
 		}
 
 		public LimitOrder build() {
 			LimitOrder order = new LimitOrder();
-			order.order_id = this.order_id;
-			order.price_limit = price_limit;
+			order.orderId = this.orderId;
+			order.priceLimit = priceLimit;
 			order.processed = processed;
-			order.account_id = account_id;
+			order.accountId = accountId;
 			return order;
 		}
 	}
 
-	public Long getOrder_id() {
-		return order_id;
+	public Long getOrderId() {
+		return orderId;
 	}
 
-	public double getPrice_limit() {
-		return price_limit;
+	public double getPriceLimit() {
+		return priceLimit;
 	}
 
-	public void setPrice_limit(double price_limit) {
-		this.price_limit = price_limit;
+	public void setPrice_limit(double priceLimit) {
+		this.priceLimit = priceLimit;
 	}
 
 	public boolean isProcessed() {
@@ -85,18 +85,18 @@ public class LimitOrder {
 		this.processed = processed;
 	}
 
-	public Long getAccount_id() {
-		return account_id;
+	public Long getAccountId() {
+		return accountId;
 	}
 
-	public void setAccount_id(Long account_id) {
-		this.account_id = account_id;
+	public void setAccountId(Long accountId) {
+		this.accountId = accountId;
 	}
 
 	@Override
 	public String toString() {
-		return "LimitOrder [order_id=" + order_id + ", price_limit=" + price_limit + ", processed=" + processed
-				+ ", account_id=" + account_id + "]";
+		return "\"limitOrder\": { \"order_id\": \"" + orderId + "\", \"price_limit\": \"" + priceLimit
+				+ "\", \"processed\": \"" + processed + "\", \"account_id\": \"" + accountId + "\" }";
 	}
 
 }

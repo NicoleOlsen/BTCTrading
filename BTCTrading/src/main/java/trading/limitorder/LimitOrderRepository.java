@@ -1,4 +1,4 @@
-package trading.limitOrder;
+package trading.limitorder;
 
 import org.springframework.data.repository.CrudRepository;
 

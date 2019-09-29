@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import customExceptions.NoDataException;
+import constants.Constants;
+import customexceptions.NoDataException;
+import enums.HttpResponse;
+import enums.Repository;
 import helper.Controller;
-import helper.HttpResponse;
-import helper.Repository;
 import helper.ResponseGenerator;
+import helper.JsonHelper;
 
 @RestController
 public class AccountController extends Controller {
@@ -28,33 +30,34 @@ public class AccountController extends Controller {
 
 	@PostMapping("/accounts")
 	public ResponseEntity<String> createAccount(@RequestBody Account account) {
-		if (account.getAccount_id() != null) {
+		String submessage = "";
+		if (account.getAccountId() != null) {
 			response.setStatus(HttpResponse.BAD_REQUEST);
-			response.setMessage("Please provide only name and USD balance.");
+			response.setMessage(JsonHelper.getJsonBodyWithMessage(Constants.PROVIDE_ONLY_NAME_AND_BALANCE, Constants.ACCOUNT_NONE));
 		} else {
 			response.clearResponse();
-			if (account.getBalance_btc() != 0) {
-				account.setBalance_btc(0);
-				response.setMessage("BTC balance can not be set upon account creation. BTC balance was set to 0.");
+			if (account.getBalanceBtc() != 0) {
+				account.setBalanceBtc(0);
+				submessage = Constants.BALANCE_WAS_SET_TO_ZERO + " ";
 			}
 			accountRepository.save(account);
-			response.appendMessage("Account created: " + account.toString());
+			response.setMessage(JsonHelper.getJsonBodyWithMessage(submessage + Constants.ACCOUNT_CREATED, account.toString()));
 		}
 		return response.getAndClearResponse();
 	}
 
 	@GetMapping("/accounts/{account_id}")
-	public ResponseEntity<String> fetchAccountDetails(@PathVariable("account_id") Long account_id) {
-		if (account_id <= 0) {
+	public ResponseEntity<String> fetchAccountDetails(@PathVariable("account_id") Long accountId) {
+		if (accountId <= 0) {
 			response.setStatus(HttpResponse.BAD_REQUEST);
-			response.setMessage("Account id must be greater than 0.");
+			response.setMessage(JsonHelper.getJsonBodyWithMessage(Constants.ACCOUNT_ID_MUST_BE_GREATHER_THAN_ZERO, Constants.ACCOUNT_NONE));
 		} else {
 			response.setStatus(HttpResponse.OK);
-			Optional<Account> account = accountRepository.findById(account_id);
+			Optional<Account> account = accountRepository.findById(accountId);
 			if (!account.isPresent()) {
-				response.setMessage("Account with id " + account_id + " doesn't exist.");
+				response.setMessage(JsonHelper.getJsonBodyWithMessage(Constants.ACCOUNT_WITH_ID + accountId + Constants.DOES_NOT_EXIST, Constants.ACCOUNT_NONE));
 			} else {
-				response.setMessage(account.get().toString());
+				response.setMessage(JsonHelper.getJsonBodyWithMessage(Constants.NONE, account.get().toString()));
 			}
 		}
 		return response.getAndClearResponse();
@@ -68,12 +71,12 @@ public class AccountController extends Controller {
 		try {
 			accounts = getAll(Repository.ACCOUNT);
 		} catch (NoDataException e) {
-			response.setMessage(e.getMessage());
+			response.setMessage(JsonHelper.getJsonBodyWithMessage(e.getMessage(), Constants.ACCOUNT_NONE));
 		}
 		if (accounts.isEmpty()) {
-			response.setMessage("There are no accounts.");
+			response.setMessage(JsonHelper.getJsonBodyWithMessage(Constants.THERE_ARE_NO_ACCOUNTS, Constants.ACCOUNT_NONE));
 		} else {
-			response.setMessage(accounts.toString());
+			response.setMessage(JsonHelper.getJsonBodyWithMessage(Constants.NONE, accounts.toString()));
 		}
 		return response.getAndClearResponse();
 	}
