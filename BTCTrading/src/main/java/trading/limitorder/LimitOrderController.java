@@ -43,14 +43,14 @@ public class LimitOrderController extends Controller {
 	public ResponseEntity<String> createLimitOrder(@RequestBody LimitOrder limitOrder) {
 		if (limitOrder.getOrderId() != null || limitOrder.isProcessed()) {
 			response.setStatus(HttpResponse.BAD_REQUEST);
-			response.setMessage(JsonHelper.getJsonBodyWithMessage(Constants.PROVIDE_ONLY_PRICE_LIMIT_AND_ACCOUNT_ID, Constants.ACCOUNT_NONE));
+			response.setMessage(JsonHelper.getJsonBodyWithMessage(Constants.PROVIDE_ONLY_PRICE_LIMIT_AND_ACCOUNT_ID, Constants.ORDER_NONE));
 		} else if (limitOrder.getPriceLimit() < 0) {
 			response.setStatus(HttpResponse.BAD_REQUEST);
-			response.setMessage(JsonHelper.getJsonBodyWithMessage(Constants.PRICE_LIMIT_MUST_NOT_BE_NEGATIVE, Constants.ACCOUNT_NONE));
+			response.setMessage(JsonHelper.getJsonBodyWithMessage(Constants.PRICE_LIMIT_MUST_NOT_BE_NEGATIVE, Constants.ORDER_NONE));
 		} else {
 			limitOrderRepository.save(limitOrder);
 			response.setStatus(HttpResponse.OK);
-			response.setMessage(JsonHelper.getJsonBodyWithMessage(Constants.NONE,Constants.ORDER_CREATED + " " + limitOrder.toString()));
+			response.setMessage(JsonHelper.getJsonBodyWithMessage(Constants.ORDER_CREATED, limitOrder.toString()));
 		}
 		return response.getAndClearResponse();
 	}
@@ -67,14 +67,14 @@ public class LimitOrderController extends Controller {
 	public ResponseEntity<String> fetchOrderDetails(@PathVariable("order_id") Long orderId) {
 		if (orderId <= 0) {
 			response.setStatus(HttpResponse.BAD_REQUEST);
-			response.setMessage(Constants.ORDER_ID_MUST_BE_GREATER_THAN_ZERO);
+			response.setMessage(JsonHelper.getJsonBodyWithMessage(Constants.ORDER_ID_MUST_BE_GREATER_THAN_ZERO, Constants.ORDER_NONE));
 		} else {
 			response.setStatus(HttpResponse.OK);
 			Optional<LimitOrder> loOpt = limitOrderRepository.findById(orderId);
 			if (loOpt.isPresent()) {
 				Quote quote = Market.getCurrentMarketData();
 				if (quote != null && quote.isEmpty()) {
-					response.setMessage(Constants.MARKET_DATA_IS_NOT_AVAILABLE);
+					response.setMessage(JsonHelper.getJsonBodyWithMessage(Constants.MARKET_DATA_IS_NOT_AVAILABLE, Constants.ORDER_NONE));
 				} else {
 					double currentPrice = Double.valueOf(quote.getPrice());
 					LimitOrder lo = loOpt.get();
@@ -85,14 +85,14 @@ public class LimitOrderController extends Controller {
 							LimitOrderHelper.updateAccount(currentPrice, acc);
 							lo.setProcessed(true);
 						}
-						response.setMessage(acc.toString() + " - " + lo.toString());
+						response.setMessage(JsonHelper.getJsonBodyWithMessage(Constants.NONE, acc.toString() + Constants.COMMA_SPACE + lo.toString()));
 					} catch (InsufficientFundsException | AccountNotFoundException e) {
 						log.info(e.getMessage());
-						response.setMessage(e.getMessage());
+						response.setMessage(JsonHelper.getJsonBodyWithMessage(e.getMessage(), Constants.ORDER_NONE));
 					}
 				}
 			} else {
-				response.setMessage(Constants.ORDER_WITH_ID + orderId + Constants.DOES_NOT_EXIST);
+				response.setMessage(JsonHelper.getJsonBodyWithMessage(Constants.ORDER_WITH_ID + orderId + Constants.DOES_NOT_EXIST, Constants.ORDER_NONE));
 			}
 		}
 		return response.getAndClearResponse();
@@ -106,12 +106,12 @@ public class LimitOrderController extends Controller {
 		try {
 			orders = getAll(Repository.ORDER);
 		} catch (NoDataException e) {
-			response.setMessage(e.getMessage());
+			response.setMessage(JsonHelper.getJsonBodyWithMessage(e.getMessage(), Constants.ORDER_NONE));
 		}
 		if (orders.isEmpty()) {
-			response.setMessage(Constants.THERE_ARE_NO_ORDERS);
+			response.setMessage(JsonHelper.getJsonBodyWithMessage(Constants.THERE_ARE_NO_ORDERS, Constants.ORDER_NONE));
 		} else {
-			response.setMessage(orders.toString());
+			response.setMessage(JsonHelper.getJsonBodyWithMessage(Constants.NONE, orders.toString()));
 		}
 		return response.getAndClearResponse();
 	}

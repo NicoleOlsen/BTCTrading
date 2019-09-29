@@ -1,14 +1,10 @@
 package helper;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -77,13 +73,5 @@ public abstract class AbstractTest {
 		int status = mvcResult.getResponse().getStatus();
 		assertEquals(expectedStatus, status);
 		return mvcResult.getResponse().getContentAsString();
-	}
-	
-	protected JSONObject getJsonFromContent(String content, String toGet) throws ParseException {
-		Object parsedContent = new JSONParser().parse(content);
-		JSONObject jsonContent = (JSONObject) parsedContent;
-		JSONObject jsonReturn = (JSONObject) jsonContent.get(toGet);
-		assertNotNull(jsonReturn);
-		return jsonReturn;
 	}
 }

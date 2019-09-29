@@ -6,6 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import constants.Constants;
 import customexceptions.NoDataException;
 import enums.Repository;
 import trading.Application;
@@ -41,7 +42,7 @@ public abstract class Controller {
 			break;
 		}
 		if (iterate == null) {
-			throw new NoDataException("No data found for " + repo);
+			throw new NoDataException(Constants.NO_DATA_FOUND_FOR + repo);
 		}
 		for (T item : iterate) {
 			data.add(item);

@@ -2,6 +2,7 @@ package trading.limitorder;
 
 import java.util.Optional;
 
+import constants.Constants;
 import customexceptions.AccountNotFoundException;
 import customexceptions.InsufficientFundsException;
 import trading.account.Account;
@@ -14,7 +15,7 @@ public class LimitOrderHelper {
 		Long accId = lo.getAccountId();
 		Optional<Account> accOpt = accountRepository.findById(accId);
 		if (!accOpt.isPresent()) {
-			throw new AccountNotFoundException("Account with id " + accId + " does not exists.");
+			throw new AccountNotFoundException(Constants.ACCOUNT_WITH_ID + accId + Constants.DOES_NOT_EXIST);
 		}
 		Account acc = accOpt.get();
 		return acc;
@@ -23,7 +24,7 @@ public class LimitOrderHelper {
 	public static Account updateAccount(double currentPrice, Account acc) throws InsufficientFundsException {
 		double usdBalance = acc.getBalanceUsd();
 		if (usdBalance <= 0) {
-			throw new InsufficientFundsException("Exchange is not possible due to insufficient funds.");
+			throw new InsufficientFundsException(Constants.EXCHANGE_NOT_POSSIBLE);
 		}
 		int newBtcBalance = (int) (usdBalance / currentPrice);
 		double newUsdBalance = usdBalance - (newBtcBalance * currentPrice);

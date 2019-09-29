@@ -95,7 +95,7 @@ public class LimitOrder {
 
 	@Override
 	public String toString() {
-		return "\"limitOrder\": { \"order_id\": \"" + orderId + "\", \"price_limit\": \"" + priceLimit
+		return "\"order\": { \"order_id\": \"" + orderId + "\", \"price_limit\": \"" + priceLimit
 				+ "\", \"processed\": \"" + processed + "\", \"account_id\": \"" + accountId + "\" }";
 	}
 
